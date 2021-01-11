@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
+import Character from './components/Character';
 import './App.css';
 
 const App = () => {
@@ -13,14 +14,22 @@ const App = () => {
   const [characters, setCharacters] = useState([]);
 
   useEffect(() => {
-    axios.get("https://swapi.py4e.com/") // ****I'm getting a CORS error and don't know how to resolve it. This is why I haven't been able to finish****
-    .then(response => {console.log(response)})
+    axios.get("https://swapi.py4e.com/api/people") 
+    .then(response => {
+        console.log(response.data.results)
+        setCharacters(response.data.results);
+    })
     .catch(err => console.log(err))
   },[]);
 
   return (
     <div className="App">
       <h1 className="Header">Characters</h1>
+      <div className="charactersDiv">
+          {characters.map(character => (
+              <Character character={character} key={character.name}/>
+          ))}
+      </div> 
     </div>
   );
 }
